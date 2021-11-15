@@ -1,10 +1,12 @@
 package app
 
-import javax.sound.midi.MidiSystem
+import javax.sound.midi.{ MidiMessage, MidiSystem, ShortMessage }
 
 object Main extends App {
+  val midiDevices = MidiSystem.getMidiDeviceInfo
+
   // デバイスを表示してみるテスト
-  MidiSystem.getMidiDeviceInfo.foreach { midiDeviceInfo =>
+  midiDevices.foreach { midiDeviceInfo =>
     val midiDevice = MidiSystem.getMidiDevice(midiDeviceInfo)
 
     val message =
@@ -16,4 +18,9 @@ object Main extends App {
 
     println(message)
   }
+
+  // 適当にMIDIメッセージを送りつける
+  val receiver = MidiSystem.getReceiver
+  val message = new ShortMessage(ShortMessage.NOTE_ON, 0, 60, 93)
+  receiver.send(message, -1)
 }
