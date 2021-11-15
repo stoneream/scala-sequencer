@@ -20,7 +20,10 @@ object Main extends App {
        |version : ${midiDeviceInfo.getVersion}""".stripMargin
   }
 
-  outputDeviceOpt.fold {} {
+  outputDeviceOpt.fold {
+    // output device not found !!
+    // do nothing
+  } {
     case (midiDeviceInfo, midiDevice) =>
       println("connected")
       println(midiDeviceInfoStr(midiDeviceInfo))
@@ -36,14 +39,23 @@ object Main extends App {
       val track = sequence.createTrack()
       val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, 36, 127)
       val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, 36, 0)
-      track.add(new MidiEvent(noteOn, 480))
-      track.add(new MidiEvent(noteOff, 480 * 2))
+
+      (0 to 4).foldLeft(Nil: List[MidiEvent]) {
+        case (b, n) =>
+          val on = new MidiEvent(noteOn, 480 * n)
+          val off = new MidiEvent(noteOn, 480 * (n + 1))
+          off :: on :: b
+      }.reverse.foreach {
+        case event =>
+          track.add(event)
+      }
 
       sequencer.open()
       sequencer.setSequence(sequence)
       sequencer.start()
       sequencer.setLoopCount(10)
-      Thread.sleep((sequencer.getMicrosecondLength / 1000) * 10)
+      Thread.sleep((sequencer.getMicrosecondLength / 1000) * 4)
+      println(sequencer.getTempoInBPM)
       sequencer.close()
   }
 }
