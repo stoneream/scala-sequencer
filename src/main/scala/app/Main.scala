@@ -37,13 +37,13 @@ object Main extends App {
 
       val sequence = new Sequence(Sequence.PPQ, 480)
       val track = sequence.createTrack()
-      val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, 36, 127)
-      val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, 36, 0)
+      val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, MidiNote.fromNote(Note.C1).number, 127)
+      val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, MidiNote.fromNote(Note.C1).number, 0)
 
       (0 to 4).foldLeft(Nil: List[MidiEvent]) {
         case (b, n) =>
           val on = new MidiEvent(noteOn, 480 * n)
-          val off = new MidiEvent(noteOn, 480 * (n + 1))
+          val off = new MidiEvent(noteOff, 480 * (n + 1))
           off :: on :: b
       }.reverse.foreach {
         case event =>
