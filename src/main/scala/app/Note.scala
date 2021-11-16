@@ -1,14 +1,24 @@
 package app
 
-trait Note {
-  require(octave >= 1)
+sealed trait Note {
+  require(octave >= 0 && octave <= 9)
   val octave: Int
 }
 
-case class C(octave: Int) extends Note
-case class D(octave: Int) extends Note
-case class E(octave: Int) extends Note
-case class F(octave: Int) extends Note
-case class G(octave: Int) extends Note
-case class A(octave: Int) extends Note
-case class B(octave: Int) extends Note
+object Note {
+
+  case class C(octave: Int = 1) extends Note
+
+  case class D(octave: Int = 1) extends Note
+
+  case class E(octave: Int = 1) extends Note
+
+  case class F(octave: Int = 1) extends Note
+
+  case class G(octave: Int = 1) extends Note
+
+  case class A(octave: Int = 1) extends Note
+
+  case class B(octave: Int = 1) extends Note
+
+}

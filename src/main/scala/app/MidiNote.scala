@@ -1,5 +1,7 @@
 package app
 
+import Note._
+
 case class MidiNote(number: Int)
 
 object MidiNote {
