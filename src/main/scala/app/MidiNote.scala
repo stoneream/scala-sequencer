@@ -1,12 +1,12 @@
 package app
 
-import Note._
+import Scale._
 
 case class MidiNote(number: Int)
 
 object MidiNote {
-  def fromNote(note: Note): MidiNote = {
-    val baseNoteNumber = note match {
+  def fromScale(scale: Scale): MidiNote = {
+    val baseNoteNumber = scale match {
       case _: C => 0
       case _: D => 2
       case _: E => 4
@@ -15,7 +15,7 @@ object MidiNote {
       case _: A => 9
       case _: B => 11
     }
-    val noteNumber = baseNoteNumber + (12 * (note.octave + 1))
+    val noteNumber = baseNoteNumber + (12 * (scale.octave + 1))
 
     MidiNote(noteNumber)
   }

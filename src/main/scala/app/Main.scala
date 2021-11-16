@@ -37,8 +37,8 @@ object Main extends App {
 
       val sequence = new Sequence(Sequence.PPQ, 480)
       val track = sequence.createTrack()
-      val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, MidiNote.fromNote(Note.C1).number, 127)
-      val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, MidiNote.fromNote(Note.C1).number, 0)
+      val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, MidiNote.fromScale(Scale.C1).number, 127)
+      val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, MidiNote.fromScale(Scale.C1).number, 0)
 
       (0 to 4).foldLeft(Nil: List[MidiEvent]) {
         case (b, n) =>

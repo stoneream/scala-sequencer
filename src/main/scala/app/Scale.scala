@@ -1,25 +1,25 @@
 package app
 
-trait Note {
+trait Scale {
   require(octave >= 0 && octave <= 9)
   val octave: Int
 }
 
-object Note {
+object Scale {
 
-  case class C(octave: Int = 1) extends Note {}
+  case class C(octave: Int) extends Scale {}
 
-  case class D(octave: Int = 1) extends Note {}
+  case class D(octave: Int) extends Scale {}
 
-  case class E(octave: Int = 1) extends Note {}
+  case class E(octave: Int) extends Scale {}
 
-  case class F(octave: Int = 1) extends Note {}
+  case class F(octave: Int) extends Scale {}
 
-  case class G(octave: Int = 1) extends Note {}
+  case class G(octave: Int) extends Scale {}
 
-  case class A(octave: Int = 1) extends Note {}
+  case class A(octave: Int) extends Scale {}
 
-  case class B(octave: Int = 1) extends Note {}
+  case class B(octave: Int) extends Scale {}
 
   final val C0 = C(0)
   final val D0 = D(0)
@@ -95,9 +95,9 @@ object Note {
   /*
   def generator: String = {
     (0 to 9).map { octave =>
-      List("C", "D", "E", "F", "G", "A", "B").map { note =>
-        val memberName = s"$note$octave"
-        val initClass = s"$note($octave)"
+      List("C", "D", "E", "F", "G", "A", "B").map { scale =>
+        val memberName = s"$scale$octave"
+        val initClass = s"$scale($octave)"
         s"final val $memberName = $initClass"
       }.mkString("\n")
     }.mkString("\n")
