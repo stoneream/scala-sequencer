@@ -9,8 +9,10 @@ object MidiGenerator {
     val notations = bar.notations
     val barTick = PPQ * 4 * bar.length // 480 * 4 * 1 = 1920
     val notePerTick = barTick / bar.notations.size // 1920 / (1|2|4|8|16)
+    val stop = new ShortMessage(ShortMessage.STOP)
+    val stopEvent = new MidiEvent(stop, barTick)
 
-    notations.zipWithIndex.foldRight(Nil: List[MidiEvent]) {
+    notations.zipWithIndex.foldRight(stopEvent :: Nil: List[MidiEvent]) {
       case ((notation, index), b) =>
         notation match {
           case scale: Scale =>
