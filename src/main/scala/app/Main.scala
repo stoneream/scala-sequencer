@@ -11,7 +11,7 @@ object Main extends App {
   val midiOutputDevices = midiDevices
     .filter { case (_, midiDevice) => midiDevice.getMaxReceivers != 0 }
   val outputDeviceOpt = midiOutputDevices
-    .find { case (midiDeviceInfo, _) => midiDeviceInfo.getName == "loopMIDI Port 1" }
+    .find { case (midiDeviceInfo, _) => midiDeviceInfo.getName == "loopMIDI Port 1" || midiDeviceInfo.getName == "bus-1" }
   val midiInputDevices = midiDevices
     .filter { case (_, midiDevice) => midiDevice.getMaxTransmitters != 0 }
 
@@ -39,6 +39,12 @@ object Main extends App {
 
       val sequence = new Sequence(Sequence.PPQ, 480)
       val track = sequence.createTrack()
+      sequencer.addMetaEventListener(new MetaEventListener {
+        override def meta(meta: MetaMessage): Unit = {
+          // デバッグプリント
+          println(meta)
+        }
+      })
 
       val bar = Bar(C1 :: C1 :: C1 :: C1 :: Nil)
       val midiMessages = MidiGenerator.generate(bar)
@@ -47,9 +53,9 @@ object Main extends App {
       sequencer.open()
       sequencer.setSequence(sequence)
       sequencer.start()
-      sequencer.setLoopCount(10)
-      Thread.sleep((sequencer.getMicrosecondLength / 1000) * 4)
-      println(sequencer.getTempoInBPM)
+      sequencer.setLoopCount(1)
+      // 長めに待つ
+      Thread.sleep((sequencer.getMicrosecondLength / 1000) * 3)
       sequencer.close()
   }
 }
