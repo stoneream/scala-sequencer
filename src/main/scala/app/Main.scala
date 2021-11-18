@@ -1,7 +1,7 @@
 package app
 
 import app.Scale._
-
+import app.Notation._
 import javax.sound.midi._
 
 object Main extends App {
@@ -41,12 +41,17 @@ object Main extends App {
       val track = sequence.createTrack()
       sequencer.addMetaEventListener(new MetaEventListener {
         override def meta(meta: MetaMessage): Unit = {
-          // デバッグプリント
-          println(meta)
+          meta.getType match {
+            case 0x2F => // トラック終端
+              sequencer.close()
+            case _ =>
+            // do nothing
+          }
         }
       })
 
-      val bar = Bar(C1 :: C1 :: C1 :: C1 :: Nil)
+      val bar = Bar(List.fill(8)(C2))
+
       val midiMessages = MidiGenerator.generate(bar)
       midiMessages.foreach(track.add)
 
@@ -54,8 +59,5 @@ object Main extends App {
       sequencer.setSequence(sequence)
       sequencer.start()
       sequencer.setLoopCount(1)
-      // 長めに待つ
-      Thread.sleep((sequencer.getMicrosecondLength / 1000) * 3)
-      sequencer.close()
   }
 }
