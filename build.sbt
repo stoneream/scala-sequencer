@@ -12,6 +12,10 @@ lazy val root = (project in file("."))
     )
   )
 
+lazy val core = project.settings(
+  name := "core"
+)
+
 scalariformPreferences := scalariformPreferences.value
   .setPreference(AlignSingleLineCaseStatements, true)
   .setPreference(DoubleIndentConstructorArguments, true)
