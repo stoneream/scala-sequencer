@@ -1,6 +1,6 @@
 package app
 
-trait Scale {
+trait Scale extends Notation {
   require(octave >= 0 && octave <= 9)
   val octave: Int
 }

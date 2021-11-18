@@ -1,6 +1,8 @@
 package app
 
-import javax.sound.midi.{ MidiDevice, MidiEvent, MidiSystem, Sequence, Sequencer, ShortMessage, Synthesizer }
+import app.Scale._
+
+import javax.sound.midi._
 
 object Main extends App {
   val midiDevices = MidiSystem.getMidiDeviceInfo
@@ -37,18 +39,10 @@ object Main extends App {
 
       val sequence = new Sequence(Sequence.PPQ, 480)
       val track = sequence.createTrack()
-      val noteOn = new ShortMessage(ShortMessage.NOTE_ON, 0, MidiNote.fromScale(Scale.C1).number, 127)
-      val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, 0, MidiNote.fromScale(Scale.C1).number, 0)
 
-      (0 to 4).foldLeft(Nil: List[MidiEvent]) {
-        case (b, n) =>
-          val on = new MidiEvent(noteOn, 480 * n)
-          val off = new MidiEvent(noteOff, 480 * (n + 1))
-          off :: on :: b
-      }.reverse.foreach {
-        case event =>
-          track.add(event)
-      }
+      val bar = Bar(C1 :: C1 :: C1 :: C1 :: Nil)
+      val midiMessages = MidiGenerator.generate(bar)
+      midiMessages.foreach(track.add)
 
       sequencer.open()
       sequencer.setSequence(sequence)

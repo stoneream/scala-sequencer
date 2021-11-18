@@ -1,7 +1,11 @@
 package app
 
-trait Notation {}
+trait Notation {
+  val PPQ = 480
+}
 
 object Notation {
-  final object Rest extends Notation()
+  case class Rest() extends Notation {}
+
+  final val R = Rest()
 }
