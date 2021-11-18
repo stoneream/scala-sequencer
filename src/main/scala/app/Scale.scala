@@ -7,6 +7,7 @@ trait Scale extends Notation {
 
 object Scale {
 
+  // todo 半音上げ・下げについては全音の拡張として実装するか検討中...
   case class C(octave: Int) extends Scale {}
 
   case class Cs(octave: Int) extends Scale {}
