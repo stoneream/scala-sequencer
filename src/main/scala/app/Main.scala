@@ -50,14 +50,29 @@ object Main extends App {
         }
       })
 
-      val bar = Bar(List.fill(8)(C2))
+      // BPMは120
+
+      val kick = C2
+      val hh = As2
+
+      // 4分音符が4つ鳴る
+      val pattern1 = kick :: kick :: kick :: kick :: Nil
+      val pattern2 = List.fill(4)(kick) // pattern1と同義
+
+      // 2分音符が2つなる
+      val pattern3 = kick :: hh :: Nil
+
+      // (kick hihat) x 2 = kick hihat kick hihat
+      val pattern4 = List.fill(2)(kick :: hh :: Nil).flatten
+
+      val bar = Bar(pattern4)
 
       val midiMessages = MidiGenerator.generate(bar)
       midiMessages.foreach(track.add)
 
       sequencer.open()
       sequencer.setSequence(sequence)
+      sequencer.setLoopCount(0)
       sequencer.start()
-      sequencer.setLoopCount(1)
   }
 }

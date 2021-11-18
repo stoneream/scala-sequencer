@@ -12,8 +12,8 @@ object MidiGenerator {
     val stop = new ShortMessage(ShortMessage.STOP)
     val stopEvent = new MidiEvent(stop, barTick)
 
-    notations.zipWithIndex.foldRight(stopEvent :: Nil: List[MidiEvent]) {
-      case ((notation, index), b) =>
+    val midiEvents = notations.zipWithIndex.map {
+      case (notation, index) =>
         notation match {
           case scale: Scale =>
             val midiNote = MidiNote.fromScale(scale)
@@ -22,10 +22,15 @@ object MidiGenerator {
             val noteOn = new ShortMessage(ShortMessage.NOTE_ON, midiNote.number, velocity)
             val noteOff = new ShortMessage(ShortMessage.NOTE_OFF, midiNote.number, 0)
 
-            new MidiEvent(noteOff, notePerTick * (index + 1)) :: new MidiEvent(noteOn, notePerTick * index) :: b
-          case _: Notation.Rest => b
+            val noteOnEvent = new MidiEvent(noteOn, notePerTick * index)
+            // 同じノートを続けて叩くときにちょっと動きが変になるので1tickだけ引く
+            val noteOffEvent = new MidiEvent(noteOff, notePerTick * (index + 1) - 1)
+            noteOnEvent :: noteOffEvent :: Nil
+          case _: Notation.Rest => Nil
         }
-    }.reverse
+    }.flatten
+
+    (stopEvent :: Nil) ::: midiEvents
   }
 
 }
