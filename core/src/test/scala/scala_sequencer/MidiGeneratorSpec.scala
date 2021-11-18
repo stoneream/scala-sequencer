@@ -1,4 +1,4 @@
-package app
+package scala_sequencer
 
 import org.scalatest.flatspec.AnyFlatSpec
 

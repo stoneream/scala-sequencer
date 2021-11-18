@@ -1,7 +1,7 @@
-package app
+package scala_sequencer
 
-import app.Scale._
-import app.Notation._
+import scala_sequencer.Scale._
+import scala_sequencer.Notation._
 import javax.sound.midi._
 
 object Main extends App {

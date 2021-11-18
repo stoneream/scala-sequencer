@@ -1,4 +1,4 @@
-package app
+package scala_sequencer
 
 trait Scale extends Notation {
   require(octave >= 0 && octave <= 9)

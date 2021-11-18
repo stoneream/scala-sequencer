@@ -1,4 +1,4 @@
-package app
+package scala_sequencer
 
 case class Bar(
   notations: List[Notation],

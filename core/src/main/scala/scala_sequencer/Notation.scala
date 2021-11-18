@@ -1,4 +1,4 @@
-package app
+package scala_sequencer
 
 trait Notation {
   val PPQ = 480

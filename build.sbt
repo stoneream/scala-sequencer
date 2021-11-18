@@ -16,6 +16,10 @@ lazy val core = project.settings(
   name := "core"
 )
 
+lazy val server = project.settings(
+  name := "server"
+)
+
 scalariformPreferences := scalariformPreferences.value
   .setPreference(AlignSingleLineCaseStatements, true)
   .setPreference(DoubleIndentConstructorArguments, true)
