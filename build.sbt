@@ -17,10 +17,17 @@ lazy val core = (project in file("core"))
     )
   )
 
+val buildPublishLocal = taskKey[Unit]("build and publish local")
+
 lazy val server = (project in file("server"))
   .enablePlugins(SbtPlugin)
   .settings(
     name := "scala-sequencer-server",
+    buildPublishLocal := {
+      (Compile / compile).value
+      publishLocal.value
+
+    }
   )
 
 scalariformPreferences := scalariformPreferences.value
