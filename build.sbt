@@ -7,7 +7,7 @@ ThisBuild / organization     := "com.github.ishikawawawa"
 lazy val root = (project in file("."))
   .settings(
     name := "scala-sequencer"
-  )
+  ).aggregate(core, server)
 
 lazy val core = (project in file("core"))
   .settings(
@@ -21,13 +21,10 @@ val buildPublishLocal = taskKey[Unit]("build and publish local")
 
 lazy val server = (project in file("server"))
   .enablePlugins(SbtPlugin)
+  .aggregate(core)
+  .dependsOn(core)
   .settings(
-    name := "scala-sequencer-server",
-    buildPublishLocal := {
-      (Compile / compile).value
-      publishLocal.value
-
-    }
+    name := "scala-sequencer-server"
   )
 
 scalariformPreferences := scalariformPreferences.value
