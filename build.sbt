@@ -7,24 +7,28 @@ ThisBuild / organization     := "com.github.ishikawawawa"
 lazy val root = (project in file("."))
   .settings(
     name := "scala-sequencer"
-  ).aggregate(core, server)
+  ).disablePlugins(ServerPlugin)
 
 lazy val core = (project in file("core"))
   .settings(
-    name := "core",
+    name := "scala-sequencer-core",
     libraryDependencies ++= Seq(
     "org.scalatest" %% "scalatest" % "3.2.8"
     )
-  )
-
-val buildPublishLocal = taskKey[Unit]("build and publish local")
+  ).disablePlugins(ServerPlugin)
 
 lazy val server = (project in file("server"))
   .enablePlugins(SbtPlugin)
+  .disablePlugins(ServerPlugin)
   .aggregate(core)
   .dependsOn(core)
   .settings(
     name := "scala-sequencer-server"
+  )
+
+lazy val example = (project in file("example"))
+  .settings(
+    name := "scala-sequencer-example"
   )
 
 scalariformPreferences := scalariformPreferences.value
